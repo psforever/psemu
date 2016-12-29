@@ -8,12 +8,12 @@
 class ConnectToWorldRequestMessage {
 public:
     std::string serverName;
-    std::array<unsigned char, 32> token;
-    unsigned int majorVersion;
-    unsigned int minorVersion;
-    unsigned int revision;
+    std::array<uint8_t, 32> token;
+    uint32_t majorVersion;
+    uint32_t minorVersion;
+    uint32_t revision;
     std::string buildDate;
-    unsigned short unk0;
+    uint16_t unk0;
     
     static ConnectToWorldRequestMessage decode(BitStream& bitStream) {
         ConnectToWorldRequestMessage packet;

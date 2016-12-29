@@ -5,15 +5,15 @@
 
 class CharacterInfoMessage {
 public:
-    unsigned int unknown;
-    unsigned int zoneId;
-    unsigned int charId;
-    unsigned short charGUID;
+    uint32_t unknown;
+    uint32_t zoneId;
+    uint32_t charId;
+    uint16_t charGUID;
     bool finished;
-    unsigned int secondsSinceLastLogin;
+    uint32_t secondsSinceLastLogin;
 
     void encode(BitStream& bitStream) {
-        unsigned char opcode = OP_CharacterInfoMessage;
+        uint8_t opcode = OP_CharacterInfoMessage;
         bitStream.write(&opcode);
 
         bitStream.write(&unknown);

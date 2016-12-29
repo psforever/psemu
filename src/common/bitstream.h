@@ -14,7 +14,7 @@
  */
 class BitStream {
 public:
-    BitStream(std::vector<unsigned char>& exisitingBuf) :
+    BitStream(std::vector<uint8_t>& exisitingBuf) :
         buf(exisitingBuf),
         streamBitPos(0),
         error(false) {
@@ -61,21 +61,21 @@ public:
     /**
      * @return A pointer to the byte holding the stream pos
      */
-    unsigned char* getHeadBytePtr() const {
+    uint8_t* getHeadBytePtr() const {
         return buf.data() + (streamBitPos / 8);
     }
 
     /**
      * @return An iterator to the byte holding the stream pos
      */
-    std::vector<unsigned char>::iterator getHeadIterator() const {
+    std::vector<uint8_t>::iterator getHeadIterator() const {
         return buf.begin() + (streamBitPos / 8);
     }
 
     /**
      * @return A pointer to the byte holding the given bit pos
      */
-    unsigned char* getPosBytePtr(size_t bitPos) const {
+    uint8_t* getPosBytePtr(size_t bitPos) const {
         return buf.data() + (bitPos / 8);
     }
 
@@ -101,9 +101,9 @@ public:
     /**
      * Moves the stream pos by some delta.
      */
-    void deltaPos(long long delta) {
+    void deltaPos(int32_t delta) {
         // TODO: Signedness is funky here. Figure out a better way.
-        long long newPos = (long long)streamBitPos + delta;
+        int32_t newPos = (int32_t)streamBitPos + delta;
 
         if (newPos < 0 || newPos > buf.size() * 8) {
             error = true;
@@ -134,7 +134,7 @@ public:
      * Reads a number of bytes.
      * The stream pos must be aligned on a byte boundary or an error will occur.
      */
-    void readBytes(unsigned char* outBuf, size_t numBytes, bool peek = false) {
+    void readBytes(uint8_t* outBuf, size_t numBytes, bool peek = false) {
         if (numBytes == 0) {
             return;
         }
@@ -180,7 +180,7 @@ public:
     /**
      * Reads a number of bits.
      */
-    void readBits(unsigned char* outBuf, size_t numBits, bool peek = false) {
+    void readBits(uint8_t* outBuf, size_t numBits, bool peek = false) {
         if (numBits == 0) {
             return;
         }
@@ -209,7 +209,7 @@ public:
      * Writes a number of bytes.
      * The stream pos must be aligned on a byte boundary or an error will occur.
      */
-    void writeBytes(const unsigned char* data, size_t numBytes) {
+    void writeBytes(const uint8_t* data, size_t numBytes) {
         if (numBytes == 0) {
             return;
         }
@@ -251,7 +251,7 @@ public:
     /**
      * Reads a number of bits.
      */
-    void writeBits(const unsigned char* data, size_t numBits) {
+    void writeBits(const uint8_t* data, size_t numBits) {
         if (numBits == 0) {
             return;
         }
@@ -286,11 +286,11 @@ public:
 
     template<typename T>
     void read(T* object, bool peek = false) {
-        readBytes((unsigned char*)object, sizeof(T), peek);
+        readBytes((uint8_t*)object, sizeof(T), peek);
         if (error) {
             std::cout << "Unaligned? Trying read bits instead..." << std::endl;
             error = false;
-            readBits((unsigned char*)object, 8 * sizeof(T), peek);
+            readBits((uint8_t*)object, 8 * sizeof(T), peek);
         }
     }
 
@@ -306,15 +306,15 @@ public:
 
     template<typename T>
     void write(const T* object) {
-        writeBytes((const unsigned char*)object, sizeof(T));
+        writeBytes((const uint8_t*)object, sizeof(T));
         if (error) {
             std::cout << "Unaligned? Trying write bits instead..." << std::endl;
             error = false;
-            writeBits((const unsigned char*)object, 8 * sizeof(T));
+            writeBits((const uint8_t*)object, 8 * sizeof(T));
         }
     }
 
-    std::vector<unsigned char>& buf;
+    std::vector<uint8_t>& buf;
 
 private:
     size_t streamBitPos;

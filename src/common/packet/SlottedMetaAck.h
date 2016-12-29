@@ -5,13 +5,13 @@
 
 class SlottedMetaAck {
 public:
-    unsigned char slot;
-    unsigned short subslot;
+    uint8_t slot;
+    uint16_t subslot;
 
     void encode(BitStream& bitStream) {
-        unsigned char opcode = 0x00;
+        uint8_t opcode = 0x00;
         bitStream.write(&opcode);
-        unsigned char controlOpcode = OP_RelatedB0 + slot % 4;
+        uint8_t controlOpcode = OP_RelatedB0 + slot % 4;
         bitStream.write(&controlOpcode);
 
         bitStream.write(&subslot);

@@ -5,11 +5,11 @@
 
 class ClientFinished {
 public:
-    unsigned char unkObjectType;
-    unsigned short pubKeyLen;
-    std::array<unsigned char, 16> pubKey;
-    unsigned short unk0;
-    std::array<unsigned char, 12> challengeResult;
+    uint8_t unkObjectType;
+    uint16_t pubKeyLen;
+    std::array<uint8_t, 16> pubKey;
+    uint16_t unk0;
+    std::array<uint8_t, 12> challengeResult;
 
     static ClientFinished decode(BitStream& bitStream) {
         ClientFinished packet;

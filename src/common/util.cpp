@@ -5,18 +5,18 @@
 #include "bitstream.h"
 #include "util.h"
 
-unsigned int randomUnsignedInt() {
+uint32_t randomUnsignedInt() {
     std::random_device randomDevice;
     std::mt19937_64 generator(randomDevice());
-    std::uniform_int_distribution<unsigned int> distribution;
+    std::uniform_int_distribution<uint32_t> distribution;
 
     return distribution(generator);
 }
 
-unsigned char randomUnsignedChar() {
+uint8_t randomUnsignedChar() {
     std::random_device randomDevice;
     std::mt19937_64 generator(randomDevice());
-    std::uniform_int_distribution<unsigned int> distribution(0, UCHAR_MAX);
+    std::uniform_int_distribution<uint32_t> distribution(0, UCHAR_MAX);
 
     return distribution(generator);
 }
@@ -40,31 +40,31 @@ std::size_t getTimeNanoseconds() {
 }
 
 void readString(BitStream& bitStream, std::string& str) {
-    unsigned short strLen = 0;
+    uint16_t strLen = 0;
     if (bitStream.readBit()) {
-        bitStream.readBits((unsigned char*)&strLen, 7);
+        bitStream.readBits((uint8_t*)&strLen, 7);
     } else {
-        bitStream.readBits((unsigned char*)&strLen, 15);
+        bitStream.readBits((uint8_t*)&strLen, 15);
     }
 
     bitStream.alignPos();
 
     str.resize(strLen);
-    bitStream.readBytes((unsigned char*)str.data(), strLen);
+    bitStream.readBytes((uint8_t*)str.data(), strLen);
 }
 
 void readString(BitStream& bitStream, std::wstring& str) {
-    unsigned short strLen = 0;
+    uint16_t strLen = 0;
     if (bitStream.readBit()) {
-        bitStream.readBits((unsigned char*)&strLen, 7);
+        bitStream.readBits((uint8_t*)&strLen, 7);
     } else {
-        bitStream.readBits((unsigned char*)&strLen, 15);
+        bitStream.readBits((uint8_t*)&strLen, 15);
     }
 
     bitStream.alignPos();
 
     str.resize(strLen);
-    bitStream.readBytes((unsigned char*)str.data(), strLen * 2);
+    bitStream.readBytes((uint8_t*)str.data(), strLen * 2);
 }
 
 void writeString(BitStream& bitStream, const std::string str) {
@@ -72,14 +72,14 @@ void writeString(BitStream& bitStream, const std::string str) {
     bool isShortString = (strLen < 128);
     bitStream.writeBit(isShortString);
     if (isShortString) {
-        bitStream.writeBits((unsigned char*)&strLen, 7);
+        bitStream.writeBits((uint8_t*)&strLen, 7);
     } else {
-        bitStream.writeBits((unsigned char*)&strLen, 15);
+        bitStream.writeBits((uint8_t*)&strLen, 15);
     }
 
     bitStream.alignPos();
 
-    bitStream.writeBytes((unsigned char*)str.data(), strLen);
+    bitStream.writeBytes((uint8_t*)str.data(), strLen);
 }
 
 void writeString(BitStream& bitStream, const std::wstring str) {
@@ -87,14 +87,14 @@ void writeString(BitStream& bitStream, const std::wstring str) {
     bool isShortString = (strLen < 128);
     bitStream.writeBit(isShortString);
     if (isShortString) {
-        bitStream.writeBits((unsigned char*)&strLen, 7);
+        bitStream.writeBits((uint8_t*)&strLen, 7);
     } else {
-        bitStream.writeBits((unsigned char*)&strLen, 15);
+        bitStream.writeBits((uint8_t*)&strLen, 15);
     }
 
     bitStream.alignPos();
 
-    bitStream.writeBytes((unsigned char*)str.data(), strLen * 2);
+    bitStream.writeBytes((uint8_t*)str.data(), strLen * 2);
 }
 
 void utilSleep(size_t ms) {

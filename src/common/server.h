@@ -14,7 +14,7 @@ using asio::ip::udp;
  */
 class Server {
 public:
-    Server(short port, void(*recvHandler)(Server&, std::vector<unsigned char>&, std::shared_ptr<Session> session)) :
+    Server(short port, void(*recvHandler)(Server&, std::vector<uint8_t>&, std::shared_ptr<Session> session)) :
         serverSocket(ioService, udp::endpoint(udp::v4(), port)),
         recvHandler(recvHandler) {
         receive();
@@ -28,7 +28,7 @@ public:
     /**
      * Sends data to a session's endpoint.
      */
-    void send(std::vector<unsigned char>& data, std::shared_ptr<Session> session);
+    void send(std::vector<uint8_t>& data, std::shared_ptr<Session> session);
 
     /**
      * @return The port the server is listening on.
@@ -54,7 +54,7 @@ private:
     asio::io_service ioService;
     udp::socket serverSocket;
     udp::endpoint clientEndpoint;
-    std::array<unsigned char, 2048> recvBuf;
+    std::array<uint8_t, 2048> recvBuf;
     std::map<asio::ip::address, std::shared_ptr<Session>> sessions;
-    void(*recvHandler)(Server&, std::vector<unsigned char>&, std::shared_ptr<Session> session);
+    void(*recvHandler)(Server&, std::vector<uint8_t>&, std::shared_ptr<Session> session);
 };

@@ -5,12 +5,12 @@
 
 class SetCurrentAvatarMessage {
 public:
-    unsigned short guid;
-    unsigned char unk1;
-    unsigned char unk2;
+    uint16_t guid;
+    uint8_t unk1;
+    uint8_t unk2;
 
     void encode(BitStream& bitStream) {
-        unsigned char opcode = OP_SetCurrentAvatarMessage;
+        uint8_t opcode = OP_SetCurrentAvatarMessage;
         bitStream.write(&opcode);
 
         bitStream.write(&guid);

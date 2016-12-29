@@ -9,13 +9,13 @@ class LoadMapMessage {
 public:
     std::string mapName;
     std::string navMapName;
-    unsigned short unk1;
-    unsigned int unk2;
+    uint16_t unk1;
+    uint32_t unk2;
     bool weaponsUnlocked;
-    unsigned int checksum;
+    uint32_t checksum;
 
     void encode(BitStream& bitStream) {
-        unsigned char opcode = OP_LoadMapMessage;
+        uint8_t opcode = OP_LoadMapMessage;
         bitStream.write(&opcode);
 
         writeString(bitStream, mapName);

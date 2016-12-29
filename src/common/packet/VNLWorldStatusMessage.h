@@ -34,18 +34,18 @@ public:
     class WorldInfo {
     public:
         std::string name;
-        unsigned short status2;
-        unsigned char serverType;
-        unsigned char status1;
+        uint16_t status2;
+        uint8_t serverType;
+        uint8_t status1;
         std::vector<ConnectionInfo> connections;
-        unsigned char empireNeed;
+        uint8_t empireNeed;
 
         void encode(BitStream& bitStream) const {
             writeString(bitStream, name);
             bitStream.write(&status2);
             bitStream.write(&serverType);
             bitStream.write(&status1);
-            unsigned char numConnections = connections.size();
+            uint8_t numConnections = connections.size();
             bitStream.write(&numConnections);
             for (auto const &connection : connections) {
                 connection.encode(bitStream);
@@ -58,11 +58,11 @@ public:
     std::vector<WorldInfo> worlds;
 
     void encode(BitStream& bitStream) {
-        unsigned char opcode = OP_VNLWorldStatusMessage;
+        uint8_t opcode = OP_VNLWorldStatusMessage;
         bitStream.write(&opcode);
 
         writeString(bitStream, welcomeMessage);
-        unsigned char numWorlds = worlds.size();
+        uint8_t numWorlds = worlds.size();
         bitStream.write(&numWorlds);
         for (auto const &world : worlds) {
             world.encode(bitStream);

@@ -16,13 +16,13 @@ std::string strAscii(Iterator first, Iterator last) {
 }
 
 template<size_t arraySize>
-std::string strAscii(const std::array<unsigned char, arraySize>& data) {
+std::string strAscii(const std::array<uint8_t, arraySize>& data) {
     return strAscii(data.begin(), data.end());
 }
 
-std::string strAscii(const std::vector<unsigned char>& data);
+std::string strAscii(const std::vector<uint8_t>& data);
 
-std::string strAscii(const unsigned char* data, size_t len);
+std::string strAscii(const uint8_t* data, size_t len);
 
 template<typename Iterator>
 std::string strHex(Iterator first, Iterator last) {
@@ -39,10 +39,10 @@ std::string strHex(Iterator first, Iterator last) {
 }
 
 template<size_t arraySize>
-std::string strHex(const std::array<unsigned char, arraySize>& data) {
+std::string strHex(const std::array<uint8_t, arraySize>& data) {
     return strHex(data.begin(), data.end());
 }
 
-std::string strHex(const std::vector<unsigned char>& data);
+std::string strHex(const std::vector<uint8_t>& data);
 
-std::string strHex(const unsigned char* data, size_t len);
+std::string strHex(const uint8_t* data, size_t len);

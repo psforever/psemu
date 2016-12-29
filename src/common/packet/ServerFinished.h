@@ -5,8 +5,8 @@
 
 class ServerFinished {
 public:
-    unsigned short unk0;
-    std::array<unsigned char, 12> challengeResult;
+    uint16_t unk0;
+    std::array<uint8_t, 12> challengeResult;
 
     void encode(BitStream& bitStream) {
         bitStream.write(&unk0);

@@ -9,8 +9,8 @@ public:
         CRA_Delete
     };
 
-    unsigned int charId;
-    unsigned int action;
+    uint32_t charId;
+    uint32_t action;
 
     static CharacterRequestMessage decode(BitStream& bitStream) {
         CharacterRequestMessage packet;

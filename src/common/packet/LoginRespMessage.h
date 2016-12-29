@@ -8,17 +8,17 @@
 
 class LoginRespMessage {
 public:
-    std::array<unsigned char, 16> token;
-    std::array<unsigned char, 16> unk0;
-    unsigned int error;
-    unsigned int stationError;
-    unsigned int subscriptionStatus;
-    unsigned int unk1;
+    std::array<uint8_t, 16> token;
+    std::array<uint8_t, 16> unk0;
+    uint32_t error;
+    uint32_t stationError;
+    uint32_t subscriptionStatus;
+    uint32_t unk1;
     std::string username;
-    unsigned int privilege;
+    uint32_t privilege;
 
     void encode(BitStream& bitStream) {
-        unsigned char opcode = OP_LoginRespMessage;
+        uint8_t opcode = OP_LoginRespMessage;
         bitStream.write(&opcode);
 
         bitStream.writeBytes(token.data(), token.size());

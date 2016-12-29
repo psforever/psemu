@@ -7,13 +7,13 @@
 
 class LoginMessage {
 public:
-    unsigned int majorVersion;
-    unsigned int minorVersion;
+    uint32_t majorVersion;
+    uint32_t minorVersion;
     std::string buildDate;
     std::string username;
     std::string password;
-    std::array<unsigned char, 32> token;
-    unsigned int revision;
+    std::array<uint8_t, 32> token;
+    uint32_t revision;
 
     static LoginMessage decode(BitStream& bitStream) {
         LoginMessage packet;

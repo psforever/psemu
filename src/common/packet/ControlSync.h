@@ -4,14 +4,14 @@
 
 class ControlSync {
 public:
-    unsigned short timeDiff;
-    unsigned int unk;
-    unsigned int field1;
-    unsigned int field2;
-    unsigned int field3;
-    unsigned int field4;
-    unsigned long long field64A;
-    unsigned long long field64B;
+    uint16_t timeDiff;
+    uint32_t unk;
+    uint32_t field1;
+    uint32_t field2;
+    uint32_t field3;
+    uint32_t field4;
+    uint64_t field64A;
+    uint64_t field64B;
 
     static ControlSync decode(BitStream& bitStream) {
         ControlSync packet;

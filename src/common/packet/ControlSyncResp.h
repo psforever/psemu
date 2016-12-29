@@ -5,17 +5,17 @@
 
 class ControlSyncResp {
 public:
-    unsigned short timeDiff;
-    unsigned int serverTick;
-    unsigned long long field1;
-    unsigned long long field2;
-    unsigned long long field3;
-    unsigned long long field4;
+    uint16_t timeDiff;
+    uint32_t serverTick;
+    uint64_t field1;
+    uint64_t field2;
+    uint64_t field3;
+    uint64_t field4;
 
     void encode(BitStream& bitStream) {
-        unsigned char controlByte = 0x00;
+        uint8_t controlByte = 0x00;
         bitStream.write(&controlByte);
-        unsigned char opcode = OP_ControlSyncResp;
+        uint8_t opcode = OP_ControlSyncResp;
         bitStream.write(&opcode);
 
         bitStream.write(&timeDiff);

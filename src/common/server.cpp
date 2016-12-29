@@ -9,7 +9,7 @@ void Server::poll() {
     ioService.poll();
 }
 
-void Server::send(std::vector<unsigned char>& data, std::shared_ptr<Session> session) {
+void Server::send(std::vector<uint8_t>& data, std::shared_ptr<Session> session) {
     serverSocket.send_to(asio::buffer(data), session->clientEndpoint);
 }
 
@@ -38,7 +38,7 @@ void Server::receive() {
         [this](std::error_code errorCode, std::size_t bytesReceived) {
         if (!errorCode && bytesReceived > 0) {
             // TODO: Don't -really- need to copy the buffer here.
-            std::vector<unsigned char> dataBuf(recvBuf.begin(), recvBuf.begin() + bytesReceived);
+            std::vector<uint8_t> dataBuf(recvBuf.begin(), recvBuf.begin() + bytesReceived);
             recvHandler(*this, dataBuf, getOrMakeSession(clientEndpoint));
         } else {
             std::cout << "Net error: \"" << errorCode.message() << "\", recvd " << bytesReceived << " bytes" << std::endl;

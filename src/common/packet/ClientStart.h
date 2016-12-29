@@ -4,9 +4,9 @@
 
 class ClientStart {
 public:
-    unsigned int unk0;
-    unsigned int clientNonce;
-    unsigned int unk1;
+    uint32_t unk0;
+    uint32_t clientNonce;
+    uint32_t unk1;
 
     static ClientStart decode(BitStream& bitStream) {
         ClientStart packet;

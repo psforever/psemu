@@ -5,16 +5,16 @@
 
 class PacketHeader {
 public:
-    unsigned char packetType;
+    uint8_t packetType;
     bool unused;
     bool secured;
     bool advanced;
     bool lenSpecified;
-    unsigned short seqNum;
+    uint16_t seqNum;
 
     static PacketHeader decode(BitStream& bitStream) {
         PacketHeader header;
-        unsigned char flags;
+        uint8_t flags;
         bitStream.read(&flags);
         header.packetType = (flags & 0b11110000) >> 4;
         header.unused = (flags & 0b1000) >> 3;
@@ -26,12 +26,12 @@ public:
     }
 
     void encode(BitStream& bitStream) {
-        unsigned char flags = 0;
+        uint8_t flags = 0;
         flags |= (packetType & 0b1111) << 4;
-        flags |= ((unsigned char)unused) << 3;
-        flags |= ((unsigned char)secured) << 2;
-        flags |= ((unsigned char)advanced) << 1;
-        flags |= ((unsigned char)lenSpecified);
+        flags |= ((uint8_t)unused) << 3;
+        flags |= ((uint8_t)secured) << 2;
+        flags |= ((uint8_t)advanced) << 1;
+        flags |= ((uint8_t)lenSpecified);
 
         bitStream.write(&flags);
         bitStream.write(&seqNum);

@@ -18,7 +18,7 @@ const std::string strServerExpansion = "server expansion";
 const std::string strClientFinished = "client finished";
 const std::string strServerFinished = "server finished";
 
-void Session::generateCrypto1(unsigned int clientTime, const std::array<unsigned char, 12>& clientChallenge, const CryptoPP::Integer& p, const CryptoPP::Integer& g) {
+void Session::generateCrypto1(uint32_t clientTime, const std::array<uint8_t, 12>& clientChallenge, const CryptoPP::Integer& p, const CryptoPP::Integer& g) {
     // Generate server keys
     CryptoPP::AutoSeededRandomPool rnd;
     dh.AccessGroupParameters().Initialize(p, g);
@@ -37,11 +37,11 @@ void Session::generateCrypto1(unsigned int clientTime, const std::array<unsigned
     cryptoState = CS_Challenge;
 };
 
-void Session::generateCrypto2(const std::array<unsigned char, 16>& clientPubKey, const std::array<unsigned char, 12>& clientChallengeResult) {
+void Session::generateCrypto2(const std::array<uint8_t, 16>& clientPubKey, const std::array<uint8_t, 12>& clientChallengeResult) {
     std::cout << "macBuffer:" << strHex(macBuffer) << std::endl;
 
     // Make sure the keys agree
-    std::vector<unsigned char> agreedValue(dh.AgreedValueLength());
+    std::vector<uint8_t> agreedValue(dh.AgreedValueLength());
     bool agreed = dh.Agree(agreedValue.data(), serverPrivKey.data(), clientPubKey.data());
 
     if (!agreed) {
@@ -55,14 +55,14 @@ void Session::generateCrypto2(const std::array<unsigned char, 16>& clientPubKey,
     // Generate the master secret
     std::vector<byte> agreedMessage;
     agreedMessage.insert(agreedMessage.end(), strMasterSecret.begin(), strMasterSecret.end());
-    agreedMessage.insert(agreedMessage.end(), &((unsigned char*)&storedClientTime)[0], &((unsigned char*)&storedClientTime)[4]);
+    agreedMessage.insert(agreedMessage.end(), &((uint8_t*)&storedClientTime)[0], &((uint8_t*)&storedClientTime)[4]);
     agreedMessage.insert(agreedMessage.end(), storedClientChallenge.begin(), storedClientChallenge.end());
     agreedMessage.insert(agreedMessage.end(), 4, 0x00);
-    agreedMessage.insert(agreedMessage.end(), &((unsigned char*)&storedServerTime)[0], &((unsigned char*)&storedServerTime)[4]);
+    agreedMessage.insert(agreedMessage.end(), &((uint8_t*)&storedServerTime)[0], &((uint8_t*)&storedServerTime)[4]);
     agreedMessage.insert(agreedMessage.end(), storedServerChallenge.begin(), storedServerChallenge.end());
     agreedMessage.insert(agreedMessage.end(), 4, 0x00);
 
-    std::vector<unsigned char> masterSecret(20);
+    std::vector<uint8_t> masterSecret(20);
     calcMD5MAC(agreedValue, agreedMessage, masterSecret);
 
     std::cout << "masterSecret:" << strHex(masterSecret) << std::endl;
@@ -72,14 +72,14 @@ void Session::generateCrypto2(const std::array<unsigned char, 16>& clientPubKey,
     // Normally if these dont match, should drop the connection
     /*
     // Check client challenge result
-    std::vector<unsigned char> clientChallengeCheckBuffer;
+    std::vector<uint8_t> clientChallengeCheckBuffer;
     clientChallengeCheckBuffer.insert(clientChallengeCheckBuffer.end(), strClientFinished.begin(), strClientFinished.end());
     clientChallengeCheckBuffer.insert(clientChallengeCheckBuffer.end(), macBuffer.begin(), macBuffer.end());
     clientChallengeCheckBuffer.push_back(0x01);
     clientChallengeCheckBuffer.insert(clientChallengeCheckBuffer.end(), clientChallengeResult.begin(), clientChallengeResult.end());
     clientChallengeCheckBuffer.push_back(0x01);
 
-    std::vector<unsigned char> clientChallengeCheck(12);
+    std::vector<uint8_t> clientChallengeCheck(12);
     calcMD5MAC(masterSecret, clientChallengeCheckBuffer, clientChallengeCheck);
 
     std::cout << "clientCheckResult:" << strHex(clientChallengeCheck) << std::endl;
@@ -89,43 +89,43 @@ void Session::generateCrypto2(const std::array<unsigned char, 16>& clientPubKey,
 
     // Generate RC% and MAC encryption keys
     std::vector<byte> switchedServerClientChallenges;
-    switchedServerClientChallenges.insert(switchedServerClientChallenges.end(), &((unsigned char*)&storedServerTime)[0], &((unsigned char*)&storedServerTime)[4]);
+    switchedServerClientChallenges.insert(switchedServerClientChallenges.end(), &((uint8_t*)&storedServerTime)[0], &((uint8_t*)&storedServerTime)[4]);
     switchedServerClientChallenges.insert(switchedServerClientChallenges.end(), storedServerChallenge.begin(), storedServerChallenge.end());
     switchedServerClientChallenges.insert(switchedServerClientChallenges.end(), 4, 0x00);
-    switchedServerClientChallenges.insert(switchedServerClientChallenges.end(), &((unsigned char*)&storedClientTime)[0], &((unsigned char*)&storedClientTime)[4]);
+    switchedServerClientChallenges.insert(switchedServerClientChallenges.end(), &((uint8_t*)&storedClientTime)[0], &((uint8_t*)&storedClientTime)[4]);
     switchedServerClientChallenges.insert(switchedServerClientChallenges.end(), storedClientChallenge.begin(), storedClientChallenge.end());
     switchedServerClientChallenges.insert(switchedServerClientChallenges.end(), 4, 0x00);
 
-    std::vector<unsigned char> decExpansionBuffer;
+    std::vector<uint8_t> decExpansionBuffer;
     decExpansionBuffer.insert(decExpansionBuffer.end(), strClientExpansion.begin(), strClientExpansion.end());
     decExpansionBuffer.insert(decExpansionBuffer.end(), 2, 0x00);
     decExpansionBuffer.insert(decExpansionBuffer.end(), switchedServerClientChallenges.begin(), switchedServerClientChallenges.end());
 
     std::cout << "decExpansionBuffer:" << strHex(decExpansionBuffer) << std::endl;
 
-    std::vector<unsigned char> encExpansionBuffer;
+    std::vector<uint8_t> encExpansionBuffer;
     encExpansionBuffer.insert(encExpansionBuffer.end(), strServerExpansion.begin(), strServerExpansion.end());
     encExpansionBuffer.insert(encExpansionBuffer.end(), 2, 0x00);
     encExpansionBuffer.insert(encExpansionBuffer.end(), switchedServerClientChallenges.begin(), switchedServerClientChallenges.end());
 
     std::cout << "encExpansionBuffer:" << strHex(encExpansionBuffer) << std::endl;
 
-    std::vector<unsigned char> expandedDecKey(64);
+    std::vector<uint8_t> expandedDecKey(64);
     calcMD5MAC(masterSecret, decExpansionBuffer, expandedDecKey);
 
     std::cout << "expandedDecKey:" << strHex(expandedDecKey) << std::endl;
 
-    std::vector<unsigned char> expandedEncKey(64);
+    std::vector<uint8_t> expandedEncKey(64);
     calcMD5MAC(masterSecret, encExpansionBuffer, expandedEncKey);
 
     std::cout << "expandedEncKey:" << strHex(expandedEncKey) << std::endl;
 
-    std::array<unsigned char, 20> decKey;
+    std::array<uint8_t, 20> decKey;
     std::copy(expandedDecKey.begin(), expandedDecKey.begin() + 20, decKey.begin());
 
     decMACKey.assign(expandedDecKey.begin() + 20, expandedDecKey.begin() + 20 + 16);
 
-    std::array<unsigned char, 20> encKey;
+    std::array<uint8_t, 20> encKey;
     std::copy(expandedEncKey.begin(), expandedEncKey.begin() + 20, encKey.begin());
 
     encMACKey.assign(expandedEncKey.begin() + 20, expandedEncKey.begin() + 20 + 16);
@@ -139,7 +139,7 @@ void Session::generateCrypto2(const std::array<unsigned char, 16>& clientPubKey,
     encRC5.SetKey(encKey.data(), encKey.size());
 
     // Generate server challenge result
-    std::vector<unsigned char> serverChallengeResultBuffer;
+    std::vector<uint8_t> serverChallengeResultBuffer;
     serverChallengeResultBuffer.insert(serverChallengeResultBuffer.end(), strServerFinished.begin(), strServerFinished.end());
     serverChallengeResultBuffer.insert(serverChallengeResultBuffer.end(), macBuffer.begin(), macBuffer.end());
     serverChallengeResultBuffer.push_back(0x01);
@@ -155,7 +155,7 @@ void Session::generateCrypto2(const std::array<unsigned char, 16>& clientPubKey,
     cryptoState = CS_Finished;
 }
 
-bool Session::decryptPacket(BitStream& bitStream, std::vector<unsigned char>& outBuf) const {
+bool Session::decryptPacket(BitStream& bitStream, std::vector<uint8_t>& outBuf) const {
     if (cryptoState != CS_Finished) {
         std::cout << "Tried to decrypt with unfinished crypto session!" << std::endl;
         return false;
@@ -167,7 +167,7 @@ bool Session::decryptPacket(BitStream& bitStream, std::vector<unsigned char>& ou
     std::cout << "Full post-decryption:" << strHex(outBuf) << std::endl;
 
     // Remove RC5 padding
-    unsigned char paddingLen = outBuf.back();
+    uint8_t paddingLen = outBuf.back();
     if (paddingLen > outBuf.size() - 1) {
         std::cout << "Padding " << paddingLen << " too big for packet size " << outBuf.size() << "!" << std::endl;
         return false;
@@ -181,11 +181,11 @@ bool Session::decryptPacket(BitStream& bitStream, std::vector<unsigned char>& ou
         return false;
     }
 
-    std::vector<unsigned char> mac(outBuf.end() - 16, outBuf.end());
+    std::vector<uint8_t> mac(outBuf.end() - 16, outBuf.end());
     outBuf.resize(outBuf.size() - 16);
 
     // Make sure MAC matches
-    std::vector<unsigned char> calculatedMac(16);
+    std::vector<uint8_t> calculatedMac(16);
     calcMD5MAC(decMACKey, outBuf, calculatedMac);
 
     if (mac != calculatedMac) {
@@ -198,19 +198,19 @@ bool Session::decryptPacket(BitStream& bitStream, std::vector<unsigned char>& ou
     return true;
 }
 
-bool Session::encryptPacket(std::vector<unsigned char>& data) const {
+bool Session::encryptPacket(std::vector<uint8_t>& data) const {
     if (cryptoState != CS_Finished) {
         std::cout << "Tried to encrypt with unfinished crypto session!" << std::endl;
         return false;
     }
 
-    std::vector<unsigned char> calculatedMac(16);
+    std::vector<uint8_t> calculatedMac(16);
     calcMD5MAC(encMACKey, data, calculatedMac);
 
     data.insert(data.end(), calculatedMac.begin(), calculatedMac.end());
 
     // -1 since also writes the padding count
-    unsigned char requiredPadding = CryptoPP::RC5::BLOCKSIZE - (data.size() % CryptoPP::RC5::BLOCKSIZE) - 1;
+    uint8_t requiredPadding = CryptoPP::RC5::BLOCKSIZE - (data.size() % CryptoPP::RC5::BLOCKSIZE) - 1;
     data.insert(data.end(), requiredPadding, 0x00);
     data.push_back(requiredPadding);
 

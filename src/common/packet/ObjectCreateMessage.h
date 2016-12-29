@@ -7,13 +7,13 @@
 
 class ObjectCreateMessage {
 public:
-    unsigned int streamLength;
+    uint32_t streamLength;
     bool hasParent;
-    unsigned short parentGuid;
-    unsigned short objectClass;
-    unsigned short guid;
-    unsigned int parentSlotIndex;
-    std::vector<unsigned char> rest;
+    uint16_t parentGuid;
+    uint16_t objectClass;
+    uint16_t guid;
+    uint32_t parentSlotIndex;
+    std::vector<uint8_t> rest;
 
     static ObjectCreateMessage decode(BitStream& bitStream) {
         ObjectCreateMessage packet;
@@ -22,7 +22,7 @@ public:
         if (packet.hasParent) {
             bitStream.read(&packet.parentGuid);
         }
-        bitStream.readBits((unsigned char*)&packet.objectClass, 11);
+        bitStream.readBits((uint8_t*)&packet.objectClass, 11);
         bitStream.read(&packet.guid);
         if (packet.hasParent) {
             // TODO: NEED TO READ INTO THE parentSlotIndex!!! it uses same decoding as the size of a string (so just reuse that)

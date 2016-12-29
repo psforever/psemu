@@ -5,7 +5,7 @@
 
 class KeepAliveMessage {
 public:
-    unsigned short keepAliveCode;
+    uint16_t keepAliveCode;
 
     static KeepAliveMessage decode(BitStream& bitStream) {
         KeepAliveMessage packet;
@@ -14,7 +14,7 @@ public:
     }
 
     void encode(BitStream& bitStream) {
-        unsigned char opcode = OP_KeepAliveMessage;
+        uint8_t opcode = OP_KeepAliveMessage;
         bitStream.write(&opcode);
 
         bitStream.write(&keepAliveCode);

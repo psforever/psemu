@@ -5,11 +5,11 @@
 
 class SlottedMetaPacket {
 public:
-    unsigned char slot;
-    unsigned short subslot;
-    std::vector<unsigned char> rest;
+    uint8_t slot;
+    uint16_t subslot;
+    std::vector<uint8_t> rest;
 
-    static SlottedMetaPacket decode(BitStream& bitStream, unsigned char slot) {
+    static SlottedMetaPacket decode(BitStream& bitStream, uint8_t slot) {
         SlottedMetaPacket packet;
         packet.slot = slot;
         bitStream.read(&packet.subslot);

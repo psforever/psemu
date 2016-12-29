@@ -4,8 +4,8 @@
 #include <string>
 #include "bitstream.h"
 
-unsigned int randomUnsignedInt();
-unsigned char randomUnsignedChar();
+uint32_t randomUnsignedInt();
+uint8_t randomUnsignedChar();
 std::size_t getTimeSeconds();
 std::size_t getTimeMilliseconds();
 std::size_t getTimeNanoseconds();

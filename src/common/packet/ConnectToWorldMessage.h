@@ -9,10 +9,10 @@ class ConnectToWorldMessage {
 public:
     std::string serverName;
     std::string serverAddress;
-    unsigned short serverPort;
+    uint16_t serverPort;
 
     void encode(BitStream& bitStream) {
-        unsigned char opcode = OP_ConnectToWorldMessage;
+        uint8_t opcode = OP_ConnectToWorldMessage;
         bitStream.write(&opcode);
 
         writeString(bitStream, serverName);

@@ -4,7 +4,7 @@
 #include "crypto.h"
 #include "md5mac.h"
 
-bool calcMD5MAC(const std::vector<unsigned char>& key, const std::vector<unsigned char>& msg, std::vector<unsigned char>& outBuf) {
+bool calcMD5MAC(const std::vector<uint8_t>& key, const std::vector<uint8_t>& msg, std::vector<uint8_t>& outBuf) {
     std::array<byte, CryptoPP::MD5MAC::DIGESTSIZE> digest;
 
     if (key.size() < 16) {
@@ -24,7 +24,7 @@ bool calcMD5MAC(const std::vector<unsigned char>& key, const std::vector<unsigne
 /**
  * Makes sure that the input and output buffers are valid for RC5 usage.
  */
-bool checkRC5Buffers(const std::vector<unsigned char>& msg, const std::vector<unsigned char>& outBuf) {
+bool checkRC5Buffers(const std::vector<uint8_t>& msg, const std::vector<uint8_t>& outBuf) {
     if (msg.size() % CryptoPP::RC5::BLOCKSIZE != 0) {
         std::cout << "RC5 content size must be a multiple of the RC5 block size!" << std::endl;
         return false;
@@ -38,7 +38,7 @@ bool checkRC5Buffers(const std::vector<unsigned char>& msg, const std::vector<un
     return true;
 }
 
-bool decryptRC5(const CryptoPP::RC5::Decryption& decryptor, const std::vector<unsigned char>& msg, std::vector<unsigned char>& outBuf) {
+bool decryptRC5(const CryptoPP::RC5::Decryption& decryptor, const std::vector<uint8_t>& msg, std::vector<uint8_t>& outBuf) {
     if (!checkRC5Buffers(msg, outBuf)) {
         return false;
     }
@@ -50,7 +50,7 @@ bool decryptRC5(const CryptoPP::RC5::Decryption& decryptor, const std::vector<un
     return true;
 }
 
-bool encryptRC5(const CryptoPP::RC5::Encryption& encryptor, const std::vector<unsigned char>& msg, std::vector<unsigned char>& outBuf) {
+bool encryptRC5(const CryptoPP::RC5::Encryption& encryptor, const std::vector<uint8_t>& msg, std::vector<uint8_t>& outBuf) {
     if (!checkRC5Buffers(msg, outBuf)) {
         return false;
     }

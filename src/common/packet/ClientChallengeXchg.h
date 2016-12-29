@@ -5,23 +5,23 @@
 
 class ClientChallengeXchg {
 public:
-    unsigned char unk0;
-    unsigned char unk1;
-    unsigned int clientTime;
-    std::array<unsigned char, 12> challenge;
-    unsigned char unkEndChallenge;
-    unsigned char unkObjects0;
-    unsigned short unkObjectType;
-    unsigned int unk2;
-    unsigned short pLen;
-    std::array<unsigned char, 16> p;
-    unsigned short gLen;
-    std::array<unsigned char, 16> g;
-    unsigned char unkEnd0;
-    unsigned char unkEnd1;
-    unsigned char unkObjects1;
-    unsigned int unk3;
-    unsigned char unkEnd2;
+    uint8_t unk0;
+    uint8_t unk1;
+    uint32_t clientTime;
+    std::array<uint8_t, 12> challenge;
+    uint8_t unkEndChallenge;
+    uint8_t unkObjects0;
+    uint16_t unkObjectType;
+    uint32_t unk2;
+    uint16_t pLen;
+    std::array<uint8_t, 16> p;
+    uint16_t gLen;
+    std::array<uint8_t, 16> g;
+    uint8_t unkEnd0;
+    uint8_t unkEnd1;
+    uint8_t unkObjects1;
+    uint32_t unk3;
+    uint8_t unkEnd2;
 
     static ClientChallengeXchg decode(BitStream& bitStream) {
         ClientChallengeXchg packet;
