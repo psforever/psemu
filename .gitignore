@@ -1,0 +1,16 @@
+# Build directory
+[Bb]uild/
+
+# *nix
+*~
+
+# OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+*.aps

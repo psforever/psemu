@@ -1,0 +1,6 @@
+[submodule "externals/cryptopp"]
+	path = externals/cryptopp
+	url = https://github.com/weidai11/cryptopp.git
+[submodule "externals/asio"]
+	path = externals/asio
+	url = https://github.com/chriskohlhoff/asio.git
