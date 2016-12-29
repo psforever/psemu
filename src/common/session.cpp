@@ -18,7 +18,7 @@ const std::string strServerExpansion = "server expansion";
 const std::string strClientFinished = "client finished";
 const std::string strServerFinished = "server finished";
 
-void Session::generateCrypto1(unsigned int clientTime, const std::array<unsigned char, 12>& clientChallenge, CryptoPP::Integer p, CryptoPP::Integer g) {
+void Session::generateCrypto1(unsigned int clientTime, const std::array<unsigned char, 12>& clientChallenge, const CryptoPP::Integer& p, const CryptoPP::Integer& g) {
     // Generate server keys
     CryptoPP::AutoSeededRandomPool rnd;
     dh.AccessGroupParameters().Initialize(p, g);

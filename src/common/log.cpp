@@ -3,7 +3,7 @@
 #include <vector>
 #include "log.h"
 
-std::string strAscii(const std::vector<unsigned char> data) {
+std::string strAscii(const std::vector<unsigned char>& data) {
     return strAscii(data.begin(), data.end());
 }
 
@@ -18,7 +18,7 @@ std::string strAscii(const unsigned char* data, size_t len) {
     return result;
 }
 
-std::string strHex(const std::vector<unsigned char> data) {
+std::string strHex(const std::vector<unsigned char>& data) {
     return strHex(data.begin(), data.end());
 }
 

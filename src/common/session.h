@@ -27,7 +27,7 @@ public:
     /**
      * Generates the first stage of crypto values.
      */
-    void generateCrypto1(unsigned int clientTime, const std::array<unsigned char, 12>& clientChallenge, CryptoPP::Integer p, CryptoPP::Integer g);
+    void generateCrypto1(unsigned int clientTime, const std::array<unsigned char, 12>& clientChallenge, const CryptoPP::Integer& p, const CryptoPP::Integer& g);
 
     /**
      * Generates the second stage of crypto values.
