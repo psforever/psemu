@@ -1,29 +1,5 @@
 #pragma once
 
-#include "CharacterInfoMessage.h"
-#include "CharacterRequestMessage.h"
-#include "ConnectToWorldMessage.h"
-#include "ConnectToWorldRequestMessage.h"
-#include "ControlSync.h"
-#include "ControlSyncResp.h"
-#include "ClientChallengeXchg.h"
-#include "ClientFinished.h"
-#include "ClientStart.h"
-#include "KeepAliveMessage.h"
-#include "LoadMapMessage.h"
-#include "LoginMessage.h"
-#include "LoginRespMessage.h"
-#include "ObjectCreateMessage.h"
-#include "opcodes.h"
-#include "pkt_header.h"
-#include "ServerChallengeXchg.h"
-#include "ServerFinished.h"
-#include "ServerStart.h"
-#include "SetCurrentAvatarMessage.h"
-#include "SlottedMetaAck.h"
-#include "SlottedMetaPacket.h"
-#include "VNLWorldStatusMessage.h"
-
 #define assertBuffersEqual(actual, expected) do {\
     if (actual != expected) {\
         std::cout << "Assert failed! File \"" << __FILE__ << "\" line " << __LINE__ << std::endl;\
