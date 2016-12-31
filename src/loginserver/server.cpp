@@ -114,6 +114,7 @@ void handleCryptoPacket(Server& server, BitStream& bitStream, std::shared_ptr<Se
         response.unk1 = 1;
         response.serverTime = session->storedServerTime;
         response.challenge = session->storedServerChallenge;
+        response.unkChallengeEnd = 0;
         response.unkObjects = 1;
         response.unk2 = { 0x03, 0x07, 0x00, 0x00, 0x00, 0x0C, 0x00 };
         response.pubKeyLen = 16;

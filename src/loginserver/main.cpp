@@ -1,11 +1,16 @@
 #include "server.h"
 #include "common/util.h"
+#include "common/packet/pkt_test.h"
 
 int main(int argc, char* argv[]) {
     /*if (argc != 2) {
         std::cerr << "Usage: loginserver <port>\n";
         return 1;
     }*/
+
+    testPacketCodingControl();
+    testPacketCodingCrypto();
+    testPacketCodingGame();
 
     // Just creating both servers in one process for now...
     const char* port = "51000";//argv[1]

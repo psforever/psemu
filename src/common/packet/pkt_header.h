@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common/bitstream.h"
 #include <vector>
+#include "common/bitstream.h"
 
 class PacketHeader {
 public:
