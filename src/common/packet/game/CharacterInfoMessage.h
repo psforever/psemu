@@ -14,13 +14,13 @@ public:
 
     void encode(BitStream& bitStream) {
         uint8_t opcode = OP_CharacterInfoMessage;
-        bitStream.write(&opcode);
+        bitStream.write(opcode);
 
-        bitStream.write(&unknown);
-        bitStream.write(&zoneId);
-        bitStream.write(&charId);
-        bitStream.write(&charGUID);
+        bitStream.write(unknown);
+        bitStream.write(zoneId);
+        bitStream.write(charId);
+        bitStream.write(charGUID);
         bitStream.writeBit(finished);
-        bitStream.write(&secondsSinceLastLogin);
+        bitStream.write(secondsSinceLastLogin);
     }
 };

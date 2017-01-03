@@ -9,7 +9,7 @@ public:
     std::array<uint8_t, 12> challengeResult;
 
     void encode(BitStream& bitStream) {
-        bitStream.write(&unk0);
-        bitStream.write(&challengeResult);
+        bitStream.write(unk0);
+        bitStream.write(challengeResult);
     }
 };

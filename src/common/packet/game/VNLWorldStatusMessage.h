@@ -41,12 +41,12 @@ public:
         uint8_t empireNeed;
 
         void encode(BitStream& bitStream) const {
-            writeString(bitStream, name);
-            bitStream.write(&status2);
-            bitStream.write(&serverType);
-            bitStream.write(&status1);
+            bitStream.write(name);
+            bitStream.write(status2);
+            bitStream.write(serverType);
+            bitStream.write(status1);
             uint8_t numConnections = connections.size();
-            bitStream.write(&numConnections);
+            bitStream.write(numConnections);
             for (auto const &connection : connections) {
                 connection.encode(bitStream);
             }
@@ -59,11 +59,11 @@ public:
 
     void encode(BitStream& bitStream) {
         uint8_t opcode = OP_VNLWorldStatusMessage;
-        bitStream.write(&opcode);
+        bitStream.write(opcode);
 
-        writeString(bitStream, welcomeMessage);
+        bitStream.write(welcomeMessage);
         uint8_t numWorlds = worlds.size();
-        bitStream.write(&numWorlds);
+        bitStream.write(numWorlds);
         for (auto const &world : worlds) {
             world.encode(bitStream);
         }

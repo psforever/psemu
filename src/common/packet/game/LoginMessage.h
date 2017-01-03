@@ -23,19 +23,19 @@ public:
 
     static LoginMessage decode(BitStream& bitStream) {
         LoginMessage packet;
-        bitStream.read(&packet.majorVersion);
-        bitStream.read(&packet.minorVersion);
-        readString(bitStream, packet.buildDate);
+        bitStream.read(packet.majorVersion);
+        bitStream.read(packet.minorVersion);
+        bitStream.read(packet.buildDate);
         packet.credentialsType = bitStream.readBit();
         if (packet.credentialsType == CT_UserPassword) {
-            readString(bitStream, packet.username);
-            readString(bitStream, packet.password);
+            bitStream.read(packet.username);
+            bitStream.read(packet.password);
         } else {
             // TODO: Fix this. Not sure if it's supposed to be padded or aligned or what.
-            bitStream.read(&packet.token);
-            readString(bitStream, packet.username);
+            bitStream.read(packet.token);
+            bitStream.read(packet.username);
         }
-        bitStream.read(&packet.revision);
+        bitStream.read(packet.revision);
         return packet;
     }
 };

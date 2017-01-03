@@ -17,13 +17,13 @@ public:
     
     static ConnectToWorldRequestMessage decode(BitStream& bitStream) {
         ConnectToWorldRequestMessage packet;
-        readString(bitStream, packet.serverName);
-        bitStream.read(&packet.token);
-        bitStream.read(&packet.majorVersion);
-        bitStream.read(&packet.minorVersion);
-        bitStream.read(&packet.revision);
-        readString(bitStream, packet.buildDate);
-        bitStream.read(&packet.unk0);
+        bitStream.read(packet.serverName);
+        bitStream.read(packet.token);
+        bitStream.read(packet.majorVersion);
+        bitStream.read(packet.minorVersion);
+        bitStream.read(packet.revision);
+        bitStream.read(packet.buildDate);
+        bitStream.read(packet.unk0);
         return packet;
     }
 };

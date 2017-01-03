@@ -15,14 +15,14 @@ public:
 
     static ControlSync decode(BitStream& bitStream) {
         ControlSync packet;
-        bitStream.read(&packet.timeDiff);
-        bitStream.read(&packet.unk);
-        bitStream.read(&packet.field1);
-        bitStream.read(&packet.field2);
-        bitStream.read(&packet.field3);
-        bitStream.read(&packet.field4);
-        bitStream.read(&packet.field64A);
-        bitStream.read(&packet.field64B);
+        bitStream.read(packet.timeDiff);
+        bitStream.read(packet.unk);
+        bitStream.read(packet.field1);
+        bitStream.read(packet.field2);
+        bitStream.read(packet.field3);
+        bitStream.read(packet.field4);
+        bitStream.read(packet.field64A);
+        bitStream.read(packet.field64B);
         return packet;
     }
 };

@@ -16,13 +16,13 @@ public:
 
     void encode(BitStream& bitStream) {
         uint8_t opcode = OP_LoadMapMessage;
-        bitStream.write(&opcode);
+        bitStream.write(opcode);
 
-        writeString(bitStream, mapName);
-        writeString(bitStream, navMapName);
-        bitStream.write(&unk1);
-        bitStream.write(&unk2);
+        bitStream.write(mapName);
+        bitStream.write(navMapName);
+        bitStream.write(unk1);
+        bitStream.write(unk2);
         bitStream.writeBit(weaponsUnlocked);
-        bitStream.write(&checksum);
+        bitStream.write(checksum);
     }
 };

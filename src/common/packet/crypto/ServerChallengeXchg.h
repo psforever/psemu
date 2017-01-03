@@ -17,15 +17,15 @@ public:
     uint8_t unk3;
 
     void encode(BitStream& bitStream) {
-        bitStream.write(&unk0);
-        bitStream.write(&unk1);
-        bitStream.write(&serverTime);
-        bitStream.write(&challenge);
-        bitStream.write(&unkChallengeEnd);
-        bitStream.write(&unkObjects);
-        bitStream.write(&unk2);
-        bitStream.write(&pubKeyLen);
-        bitStream.write(&pubKey);
-        bitStream.write(&unk3);
+        bitStream.write(unk0);
+        bitStream.write(unk1);
+        bitStream.write(serverTime);
+        bitStream.write(challenge);
+        bitStream.write(unkChallengeEnd);
+        bitStream.write(unkObjects);
+        bitStream.write(unk2);
+        bitStream.write(pubKeyLen);
+        bitStream.write(pubKey);
+        bitStream.write(unk3);
     }
 };

@@ -12,7 +12,7 @@ public:
     static SlottedMetaPacket decode(BitStream& bitStream, uint8_t slot) {
         SlottedMetaPacket packet;
         packet.slot = slot;
-        bitStream.read(&packet.subslot);
+        bitStream.read(packet.subslot);
 
         size_t remainingBytes = bitStream.getRemainingBytes();
         packet.rest.resize(remainingBytes);

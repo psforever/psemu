@@ -11,9 +11,9 @@ public:
 
     void encode(BitStream& bitStream) {
         uint8_t opcode = OP_SetCurrentAvatarMessage;
-        bitStream.write(&opcode);
+        bitStream.write(opcode);
 
-        bitStream.write(&guid);
+        bitStream.write(guid);
         bitStream.writeBits(&unk1, 3);
         bitStream.writeBits(&unk2, 3);
     }

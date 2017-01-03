@@ -15,13 +15,13 @@ public:
     static PacketHeader decode(BitStream& bitStream) {
         PacketHeader header;
         uint8_t flags;
-        bitStream.read(&flags);
+        bitStream.read(flags);
         header.packetType = (flags & 0b11110000) >> 4;
         header.unused = (flags & 0b1000) >> 3;
         header.secured = (flags & 0b100) >> 2;
         header.advanced = (flags & 0b10) >> 1;
         header.lenSpecified = (flags & 0b1);
-        bitStream.read(&header.seqNum);
+        bitStream.read(header.seqNum);
         return header;
     }
 
@@ -33,7 +33,7 @@ public:
         flags |= ((uint8_t)advanced) << 1;
         flags |= ((uint8_t)lenSpecified);
 
-        bitStream.write(&flags);
-        bitStream.write(&seqNum);
+        bitStream.write(flags);
+        bitStream.write(seqNum);
     }
 };

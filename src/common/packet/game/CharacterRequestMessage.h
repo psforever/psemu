@@ -14,8 +14,8 @@ public:
 
     static CharacterRequestMessage decode(BitStream& bitStream) {
         CharacterRequestMessage packet;
-        bitStream.read(&packet.charId);
-        bitStream.read(&packet.action);
+        bitStream.read(packet.charId);
+        bitStream.read(packet.action);
         return packet;
     }
 };

@@ -25,23 +25,23 @@ public:
 
     static ClientChallengeXchg decode(BitStream& bitStream) {
         ClientChallengeXchg packet;
-        bitStream.read(&packet.unk0);
-        bitStream.read(&packet.unk1);
-        bitStream.read(&packet.clientTime);
-        bitStream.read(&packet.challenge);
-        bitStream.read(&packet.unkEndChallenge);
-        bitStream.read(&packet.unkObjects0);
-        bitStream.read(&packet.unkObjectType);
-        bitStream.read(&packet.unk2);
-        bitStream.read(&packet.pLen);
-        bitStream.read(&packet.p);
-        bitStream.read(&packet.gLen);
-        bitStream.read(&packet.g);
-        bitStream.read(&packet.unkEnd0);
-        bitStream.read(&packet.unkEnd1);
-        bitStream.read(&packet.unkObjects1);
-        bitStream.read(&packet.unk3);
-        bitStream.read(&packet.unkEnd2);
+        bitStream.read(packet.unk0);
+        bitStream.read(packet.unk1);
+        bitStream.read(packet.clientTime);
+        bitStream.read(packet.challenge);
+        bitStream.read(packet.unkEndChallenge);
+        bitStream.read(packet.unkObjects0);
+        bitStream.read(packet.unkObjectType);
+        bitStream.read(packet.unk2);
+        bitStream.read(packet.pLen);
+        bitStream.read(packet.p);
+        bitStream.read(packet.gLen);
+        bitStream.read(packet.g);
+        bitStream.read(packet.unkEnd0);
+        bitStream.read(packet.unkEnd1);
+        bitStream.read(packet.unkObjects1);
+        bitStream.read(packet.unk3);
+        bitStream.read(packet.unkEnd2);
         return packet;
     }
 };

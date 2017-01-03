@@ -14,15 +14,15 @@ public:
 
     void encode(BitStream& bitStream) {
         uint8_t controlByte = 0x00;
-        bitStream.write(&controlByte);
+        bitStream.write(controlByte);
         uint8_t opcode = OP_ControlSyncResp;
-        bitStream.write(&opcode);
+        bitStream.write(opcode);
 
-        bitStream.write(&timeDiff);
-        bitStream.write(&serverTick);
-        bitStream.write(&field1);
-        bitStream.write(&field2);
-        bitStream.write(&field3);
-        bitStream.write(&field4);
+        bitStream.write(timeDiff);
+        bitStream.write(serverTick);
+        bitStream.write(field1);
+        bitStream.write(field2);
+        bitStream.write(field3);
+        bitStream.write(field4);
     }
 };

@@ -10,9 +10,9 @@ public:
 
     static ClientStart decode(BitStream& bitStream) {
         ClientStart packet;
-        bitStream.read(&packet.unk0);
-        bitStream.read(&packet.clientNonce);
-        bitStream.read(&packet.unk1);
+        bitStream.read(packet.unk0);
+        bitStream.read(packet.clientNonce);
+        bitStream.read(packet.unk1);
         return packet;
     }
 };

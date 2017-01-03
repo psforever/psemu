@@ -19,16 +19,16 @@ public:
 
     void encode(BitStream& bitStream) {
         uint8_t opcode = OP_LoginRespMessage;
-        bitStream.write(&opcode);
+        bitStream.write(opcode);
 
-        bitStream.writeBytes(token.data(), token.size());
-        bitStream.writeBytes(unk0.data(), unk0.size());
-        bitStream.write(&error);
-        bitStream.write(&stationError);
-        bitStream.write(&subscriptionStatus);
-        bitStream.write(&unk1);
-        writeString(bitStream, username);
-        bitStream.write(&privilege);
+        bitStream.write(token);
+        bitStream.write(unk0);
+        bitStream.write(error);
+        bitStream.write(stationError);
+        bitStream.write(subscriptionStatus);
+        bitStream.write(unk1);
+        bitStream.write(username);
+        bitStream.write(privilege);
         bitStream.writeBit(privilege & 1);
     }
 };

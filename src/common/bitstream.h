@@ -274,8 +274,13 @@ public:
         streamBitPos += numBits;
     }
 
+    /**
+     * Templated read functions.
+     */
     template<typename T, size_t arraySize>
     void read(std::array<T, arraySize>& outBuf, bool peek = false) {
+        static_assert(!std::is_pointer<T>::value, "Object type must not be a pointer.");
+
         readBytes(outBuf.data(), sizeof(T) * outBuf.size(), peek);
         if (error) {
             std::cout << "Unaligned? Trying read bits instead..." << std::endl;
@@ -285,33 +290,112 @@ public:
     }
 
     template<typename T>
-    void read(T* object, bool peek = false) {
-        readBytes((uint8_t*)object, sizeof(T), peek);
+    void read(T& object, bool peek = false) {
+        static_assert(!std::is_pointer<T>::value, "Object type must not be a pointer.");
+
+        readBytes((uint8_t*)&object, sizeof(T), peek);
         if (error) {
             std::cout << "Unaligned? Trying read bits instead..." << std::endl;
             error = false;
-            readBits((uint8_t*)object, 8 * sizeof(T), peek);
+            readBits((uint8_t*)&object, 8 * sizeof(T), peek);
         }
     }
 
+    void read(std::string& str) {
+        uint16_t strLen = 0;
+        if (readBit()) {
+            readBits((uint8_t*)&strLen, 7);
+        } else {
+            readBits((uint8_t*)&strLen, 15);
+        }
+
+        alignPos();
+
+        str.resize(strLen);
+        readBytes((uint8_t*)str.data(), strLen);
+    }
+
+    void read(std::wstring& str) {
+        uint16_t strLen = 0;
+        if (readBit()) {
+            readBits((uint8_t*)&strLen, 7);
+        } else {
+            readBits((uint8_t*)&strLen, 15);
+        }
+
+        alignPos();
+
+        str.resize(strLen);
+        readBytes((uint8_t*)str.data(), strLen * 2);
+    }
+
+    /**
+     * Templated write functions.
+     */
     template<typename T, size_t arraySize>
     void write(const std::array<T, arraySize>& data) {
-        writeBytes(data.data(), sizeof(T) * data.size(), peek);
+        static_assert(!std::is_pointer<T>::value, "Object type must not be a pointer.");
+
+        writeBytes(data.data(), sizeof(T) * data.size());
         if (error) {
-            std::cout << "Unaligned? Trying read bits instead..." << std::endl;
+            std::cout << "Unaligned? Trying write bits instead..." << std::endl;
             error = false;
-            writeBits(data.data(), 8 * sizeof(T) * data.size(), peek);
+            writeBits(data.data(), 8 * sizeof(T) * data.size());
         }
     }
 
     template<typename T>
-    void write(const T* object) {
-        writeBytes((const uint8_t*)object, sizeof(T));
+    void write(const std::vector<T>& data) {
+        static_assert(!std::is_pointer<T>::value, "Object type must not be a pointer.");
+
+        writeBytes(data.data(), sizeof(T) * data.size());
         if (error) {
             std::cout << "Unaligned? Trying write bits instead..." << std::endl;
             error = false;
-            writeBits((const uint8_t*)object, 8 * sizeof(T));
+            writeBits(data.data(), 8 * sizeof(T) * data.size());
         }
+    }
+
+    template<typename T>
+    void write(const T& object) {
+        static_assert(!std::is_pointer<T>::value, "Object type must not be a pointer.");
+
+        writeBytes((const uint8_t*)&object, sizeof(T));
+        if (error) {
+            std::cout << "Unaligned? Trying write bits instead..." << std::endl;
+            error = false;
+            writeBits((const uint8_t*)&object, 8 * sizeof(T));
+        }
+    }
+
+    void write(const std::string& str) {
+        size_t strLen = str.length();
+        bool isShortString = (strLen < 128);
+        writeBit(isShortString);
+        if (isShortString) {
+            writeBits((uint8_t*)&strLen, 7);
+        } else {
+            writeBits((uint8_t*)&strLen, 15);
+        }
+
+        alignPos();
+
+        writeBytes((uint8_t*)str.data(), strLen);
+    }
+
+    void write(const std::wstring& str) {
+        size_t strLen = str.length();
+        bool isShortString = (strLen < 128);
+        writeBit(isShortString);
+        if (isShortString) {
+            writeBits((uint8_t*)&strLen, 7);
+        } else {
+            writeBits((uint8_t*)&strLen, 15);
+        }
+
+        alignPos();
+
+        writeBytes((uint8_t*)str.data(), strLen * 2);
     }
 
     std::vector<uint8_t>& buf;

@@ -12,12 +12,12 @@ public:
 
     void encode(BitStream& bitStream) {
         uint8_t opcode = 0x00;
-        bitStream.write(&opcode);
+        bitStream.write(opcode);
         uint8_t controlOpcode = OP_ServerStart;
-        bitStream.write(&controlOpcode);
+        bitStream.write(controlOpcode);
 
-        bitStream.write(&clientNonce);
-        bitStream.write(&serverNonce);
-        bitStream.write(&unk0);
+        bitStream.write(clientNonce);
+        bitStream.write(serverNonce);
+        bitStream.write(unk0);
     }
 };

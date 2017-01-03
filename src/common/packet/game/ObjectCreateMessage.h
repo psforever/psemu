@@ -17,13 +17,13 @@ public:
 
     static ObjectCreateMessage decode(BitStream& bitStream) {
         ObjectCreateMessage packet;
-        bitStream.read(&packet.streamLength);
+        bitStream.read(packet.streamLength);
         packet.hasParent = !bitStream.readBit();
         if (packet.hasParent) {
-            bitStream.read(&packet.parentGuid);
+            bitStream.read(packet.parentGuid);
         }
         bitStream.readBits((uint8_t*)&packet.objectClass, 11);
-        bitStream.read(&packet.guid);
+        bitStream.read(packet.guid);
         if (packet.hasParent) {
             // TODO: NEED TO READ INTO THE parentSlotIndex!!! it uses same decoding as the size of a string (so just reuse that)
         }

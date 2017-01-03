@@ -13,11 +13,11 @@ public:
 
     static ClientFinished decode(BitStream& bitStream) {
         ClientFinished packet;
-        bitStream.read(&packet.unkObjectType);
-        bitStream.read(&packet.pubKeyLen);
-        bitStream.read(&packet.pubKey);
-        bitStream.read(&packet.unk0);
-        bitStream.read(&packet.challengeResult);
+        bitStream.read(packet.unkObjectType);
+        bitStream.read(packet.pubKeyLen);
+        bitStream.read(packet.pubKey);
+        bitStream.read(packet.unk0);
+        bitStream.read(packet.challengeResult);
         return packet;
     }
 };

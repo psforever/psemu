@@ -13,10 +13,10 @@ public:
 
     void encode(BitStream& bitStream) {
         uint8_t opcode = OP_ConnectToWorldMessage;
-        bitStream.write(&opcode);
+        bitStream.write(opcode);
 
-        writeString(bitStream, serverName);
-        writeString(bitStream, serverAddress);
-        bitStream.write(&serverPort);
+        bitStream.write(serverName);
+        bitStream.write(serverAddress);
+        bitStream.write(serverPort);
     }
 };

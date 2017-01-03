@@ -42,7 +42,7 @@ void encodeHeaderEncrypted(BitStream& bitStream) {
     header.encode(bitStream);
 
     uint8_t paddingForEncryptAlign = 0x00;
-    bitStream.write(&paddingForEncryptAlign);
+    bitStream.write(paddingForEncryptAlign);
 }
 
 void encryptAndSend(Server& server, std::vector<uint8_t>& data, std::shared_ptr<Session> session) {
@@ -58,7 +58,7 @@ void encryptAndSend(Server& server, std::vector<uint8_t>& data, std::shared_ptr<
     BitStream sendStreamFinal(sendBufFinal);
 
     encodeHeaderEncrypted(sendStreamFinal);
-    sendStreamFinal.writeBytes(data.data(), data.size());
+    sendStreamFinal.write(data);
 
     std::cout << "Encrypted:" << strHex(sendBufFinal) << std::endl;
 
@@ -154,7 +154,7 @@ void handleControlPacket(Server& server, BitStream& bitStream, std::shared_ptr<S
     bitStream.deltaPos(8 * sizeof(uint8_t));
 
     uint8_t opcode;
-    bitStream.read(&opcode);
+    bitStream.read(opcode);
 
     std::cout << "---- ControlPacket, op: " << std::hex << std::uppercase << (unsigned)opcode << std::dec << std::nouppercase << ", type: ";
 
@@ -252,7 +252,7 @@ void handleControlPacket(Server& server, BitStream& bitStream, std::shared_ptr<S
 
         // Handle all inner packets
         uint8_t packetsSize;
-        bitStream.read(&packetsSize);
+        bitStream.read(packetsSize);
 
         size_t packetsBitSize = (size_t)packetsSize * 8;
         size_t initialPos = bitStream.getPos();
@@ -280,7 +280,7 @@ void generateToken(const std::string username, const std::string password, std::
 
 void handleGamePacketLogin(Server& server, BitStream& bitStream, std::shared_ptr<Session> session) {
     uint8_t opcode;
-    bitStream.read(&opcode);
+    bitStream.read(opcode);
 
     std::cout << "---- GamePacket, op: " << std::hex << std::uppercase << (unsigned)opcode << std::dec << std::nouppercase << ", type: ";
 
@@ -368,7 +368,7 @@ std::vector<uint8_t> objectHex = { 0x18, 0x57, 0x0C, 0x00, 0x00, 0xBC, 0x84, 0xB
 
 void handleGamePacketWorld(Server& server, BitStream& bitStream, std::shared_ptr<Session> session) {
     uint8_t opcode;
-    bitStream.read(&opcode);
+    bitStream.read(opcode);
 
     std::cout << "---- GamePacket, op: " << std::hex << std::uppercase << (unsigned)opcode << std::dec << std::nouppercase << ", type: ";
 
@@ -498,7 +498,7 @@ void handleGamePacket(Server& server, BitStream& bitStream, std::shared_ptr<Sess
 
 void handleNormalPacket(Server& server, BitStream& bitStream, std::shared_ptr<Session> session) {
     uint8_t controlPacketType;
-    bitStream.read(&controlPacketType, true);
+    bitStream.read(controlPacketType, true);
 
     if (controlPacketType == 0x00) {
         handleControlPacket(server, bitStream, session);
@@ -547,7 +547,7 @@ void handleNonControlPacket(Server& server, BitStream& bitStream, std::shared_pt
 
 void handlePacket(Server& server, BitStream& bitStream, std::shared_ptr<Session> session) {
     uint8_t controlPacketType;
-    bitStream.read(&controlPacketType, true);
+    bitStream.read(controlPacketType, true);
 
     if (controlPacketType == 0x00) {
         handleControlPacket(server, bitStream, session);
