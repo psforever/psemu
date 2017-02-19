@@ -1,14 +1,14 @@
 #include <vector>
 #include "pkt_all.h"
 #include "pkt_test.h"
+#include "common/bitstream.h"
 #include "common/log.h"
+#include "common/test.h"
 
 void testCharacterInfoMessage() {
-    uint8_t expectedOpcode = OP_CharacterInfoMessage;
     // TODO: Replace with actual packet data
-    static std::vector<uint8_t> encodedBuf = std::vector<uint8_t>({
-        expectedOpcode, 0x21, 0xA5, 0x75, 0xB7, 0x45, 0x34, 0x23, 0x12, 0x32, 0x54, 0x76, 0x98, 0x34, 0x12, 0x8C, 0xB3, 0xC1, 0xA9, 0x80
-    });
+    static std::vector<uint8_t> encodedBuf = hexToBytes(
+        "14 21A575B7453423123254769834128CB3 C1A980");
 
     // Encode
     CharacterInfoMessage encodePacket;
@@ -25,26 +25,21 @@ void testCharacterInfoMessage() {
 }
 
 void testCharacterRequestMessage() {
-    uint8_t expectedOpcode = OP_CharacterRequestMessage;
     // TODO: Replace with actual packet data
-    static std::vector<uint8_t> encodedBuf = std::vector<uint8_t>({
-        expectedOpcode, 0x45, 0x34, 0x23, 0x12, 0x32, 0x54, 0x76, 0x98
-    });
+    static std::vector<uint8_t> encodedBuf = hexToBytes(
+        "30 4534231232547698");
 
     // Decode
     BitStream decodeBitStream(encodedBuf);
-    assertOpcode(decodeBitStream, expectedOpcode);
+    assertOpcode(decodeBitStream, OP_CharacterRequestMessage);
     CharacterRequestMessage decodePacket = CharacterRequestMessage::decode(decodeBitStream);
     assertEqual(decodePacket.charId, 0x12233445);
     assertEqual(decodePacket.action, 0x98765432);
 }
 
 void testConnectToWorldMessage() {
-    uint8_t expectedOpcode = OP_ConnectToWorldMessage;
-    static std::vector<uint8_t> encodedBuf = std::vector<uint8_t>({
-        expectedOpcode, 0x86, 0x67, 0x65, 0x6D, 0x69, 0x6E, 0x69, 0x8C, 0x36, 0x34, 0x2E, 0x33, 0x37, 0x2E, 0x31,
-        0x35, 0x38, 0x2E, 0x36, 0x39, 0x3C, 0x75
-    });
+    static std::vector<uint8_t> encodedBuf = hexToBytes(
+        "04 8667656D696E69  8C36342E33372E3135382E36393C75");
 
     // Encode
     ConnectToWorldMessage encodePacket;
@@ -58,18 +53,13 @@ void testConnectToWorldMessage() {
 }
 
 void testConnectToWorldRequestMessage() {
-    uint8_t expectedOpcode = OP_ConnectToWorldRequestMessage;
     // TODO: Doesnt seem like a very good test case...
-    static std::vector<uint8_t> encodedBuf = std::vector<uint8_t>({
-        expectedOpcode, 0x86, 0x67, 0x65, 0x6D, 0x69, 0x6E, 0x69, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00
-    });
+    static std::vector<uint8_t> encodedBuf = hexToBytes(
+        "03 8667656D696E69 0000000000000000 00000000 00000000 00000000 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  80 00 00");
 
     // Decode
     BitStream decodeBitStream(encodedBuf);
-    assertOpcode(decodeBitStream, expectedOpcode);
+    assertOpcode(decodeBitStream, OP_ConnectToWorldRequestMessage);
     ConnectToWorldRequestMessage decodePacket = ConnectToWorldRequestMessage::decode(decodeBitStream);
     assertEqual(decodePacket.serverName, "gemini");
     static std::array<uint8_t, 32> expectedToken = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
@@ -82,10 +72,8 @@ void testConnectToWorldRequestMessage() {
 }
 
 void testKeepAliveMessage() {
-    uint8_t expectedOpcode = OP_KeepAliveMessage;
-    static std::vector<uint8_t> encodedBuf = std::vector<uint8_t>({
-        expectedOpcode, 0x34, 0x12
-    });
+    static std::vector<uint8_t> encodedBuf = hexToBytes(
+        "BA 3412");
 
     // Encode
     KeepAliveMessage encodePacket;
@@ -97,17 +85,14 @@ void testKeepAliveMessage() {
 
     // Decode
     BitStream decodeBitStream(encodedBuf);
-    assertOpcode(decodeBitStream, expectedOpcode);
+    assertOpcode(decodeBitStream, OP_KeepAliveMessage);
     KeepAliveMessage decodePacket = KeepAliveMessage::decode(decodeBitStream);
     assertEqual(decodePacket.keepAliveCode, 0x1234);
 }
 
 void testLoadMapMessage() {
-    uint8_t expectedOpcode = OP_LoadMapMessage;
-    static std::vector<uint8_t> encodedBuf = std::vector<uint8_t>({
-        expectedOpcode, 0x85, 0x6D, 0x61, 0x70, 0x31, 0x30, 0x83, 0x7A, 0x31, 0x30, 0x0F, 0xA0, 0x19, 0x00, 0x00,
-        0x00, 0xF6, 0xF1, 0x60, 0x86, 0x80
-    });
+    static std::vector<uint8_t> encodedBuf = hexToBytes(
+        "31 85 6D61703130 83 7A3130 0FA0 19000000 F6 F1 60 86 80");
 
     // Encode
     LoadMapMessage encodePacket;
@@ -124,16 +109,12 @@ void testLoadMapMessage() {
 }
 
 void testLoginMessage() {
-    uint8_t expectedOpcode = OP_LoginMessage;
-    static std::vector<uint8_t> encodedBuf = std::vector<uint8_t>({
-        expectedOpcode, 0x03, 0x00, 0x00, 0x00, 0x0F, 0x00, 0x00, 0x00, 0x8B, 0x44, 0x65, 0x63, 0x20, 0x20, 0x32,
-        0x20, 0x32, 0x30, 0x30, 0x39, 0x42, 0x00, 0x61, 0x73, 0x64, 0x66, 0x84, 0x31, 0x32, 0x33, 0x34,
-        0x54, 0x00, 0x00, 0x00
-    });
+    static std::vector<uint8_t> encodedBuf = hexToBytes(
+        "01 030000000F0000008B44656320203220 32303039420061736466843132333454 000000");
 
     // Decode
     BitStream decodeBitStream(encodedBuf);
-    assertOpcode(decodeBitStream, expectedOpcode);
+    assertOpcode(decodeBitStream, OP_LoginMessage);
     LoginMessage decodePacket = LoginMessage::decode(decodeBitStream);
     assertEqual(decodePacket.majorVersion, 3);
     assertEqual(decodePacket.minorVersion, 15);
@@ -147,13 +128,8 @@ void testLoginMessage() {
 }
 
 void testLoginRespMessage() {
-    uint8_t expectedOpcode = OP_LoginRespMessage;
-    static std::vector<uint8_t> encodedBuf = std::vector<uint8_t>({
-        expectedOpcode, 0x54, 0x48, 0x49, 0x53, 0x49, 0x53, 0x4D, 0x59, 0x54, 0x4F, 0x4B, 0x45, 0x4E, 0x59, 0x45,
-        0x53, 0x00, 0x00, 0x00, 0x00, 0x18, 0xFA, 0xBE, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x6B, 0x7B, 0xD8,
-        0x28, 0x84, 0x61, 0x73, 0x64, 0x66, 0x11, 0x27, 0x00, 0x00, 0x80
-    });
+    static std::vector<uint8_t> encodedBuf = hexToBytes(
+        "02 5448495349534D59544F4B454E594553 0000000018FABE0C0000000000000000 0000000001000000020000006B7BD828 84617364661127000080");
 
     // Encode
     LoginRespMessage encodePacket;
@@ -172,11 +148,9 @@ void testLoginRespMessage() {
 }
 
 void testSetCurrentAvatarMessage() {
-    uint8_t expectedOpcode = OP_SetCurrentAvatarMessage;
     // TODO: Doesnt seem like a very good test case...
-    static std::vector<uint8_t> encodedBuf = std::vector<uint8_t>({
-        expectedOpcode, 0x4B, 0x00, 0x00
-    });
+    static std::vector<uint8_t> encodedBuf = hexToBytes(
+        "32 4B0000");
 
     // Encode
     SetCurrentAvatarMessage encodePacket;

@@ -1,6 +1,7 @@
 #include "server.h"
 #include "common/util.h"
 #include "common/packet/pkt_test.h"
+#include "common/bitstream_test.h"
 
 int main(int argc, char* argv[]) {
     /*if (argc != 2) {
@@ -11,6 +12,7 @@ int main(int argc, char* argv[]) {
     testPacketCodingControl();
     testPacketCodingCrypto();
     testPacketCodingGame();
+    testBitstream();
 
     // Just creating both servers in one process for now...
     const char* port = "51000";//argv[1]

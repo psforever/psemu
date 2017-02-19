@@ -42,3 +42,40 @@ std::size_t getTimeNanoseconds() {
 void utilSleep(size_t ms) {
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
+
+int hexCharToInt(char c) {
+    if (c >= '0' && c <= '9') {
+        return c - '0';
+    } else if (c >= 'A' && c <= 'F') {
+        return 10 + c - 'A';
+    } else if (c >= 'a' && c <= 'f') {
+        return 10 + c - 'A';
+    }
+
+    return -1;
+}
+
+std::vector<uint8_t> hexToBytes(std::string hexStr) {
+    std::vector<uint8_t> bytes;
+
+    uint8_t curValue = 0;
+    bool firstDigitFilled = false;
+    for (auto c : hexStr) {
+        int charValue = hexCharToInt(c);
+
+        if (charValue != -1) {
+            if (!firstDigitFilled) {
+                curValue = 16 * charValue;
+
+                firstDigitFilled = true;
+            } else {
+                bytes.push_back(curValue + charValue);
+
+                firstDigitFilled = false;
+                curValue = 0;
+            }
+        }
+    }
+
+    return bytes;
+}

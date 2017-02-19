@@ -1,20 +1,18 @@
 #include <vector>
 #include "pkt_all.h"
 #include "pkt_test.h"
+#include "common/bitstream.h"
 #include "common/log.h"
+#include "common/test.h"
 
 void testControlSync() {
-    uint8_t expectedOpcode = OP_ControlSync;
-    static std::vector<uint8_t> encodedBuf = std::vector<uint8_t>({
-        0x00, expectedOpcode, 0x52, 0x68, 0x00, 0x00, 0x00, 0x4D, 0x00, 0x00, 0x00, 0x52, 0x00, 0x00, 0x00, 0x4D,
-        0x00, 0x00, 0x00, 0x7C, 0x00, 0x00, 0x00, 0x4D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x76,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x75
-    });
+    static std::vector<uint8_t> encodedBuf = hexToBytes(
+        "0007 5268 0000004D 00000052 0000004D 0000007C 0000004D 0000000000000276 0000000000000275");
 
     // Decode
     // TODO: Are these actually big endian?
     BitStream decodeBitStream(encodedBuf);
-    assertControlOpcode(decodeBitStream, expectedOpcode);
+    assertControlOpcode(decodeBitStream, OP_ControlSync);
     ControlSync decodePacket = ControlSync::decode(decodeBitStream);
     assertEqual(decodePacket.timeDiff, 0x6852);
     assertEqual(decodePacket.unk, 0x4D000000);
@@ -27,12 +25,8 @@ void testControlSync() {
 }
 
 void testControlSyncResp() {
-    uint8_t expectedOpcode = OP_ControlSyncResp;
-    static std::vector<uint8_t> encodedBuf = std::vector<uint8_t>({
-        0x00, expectedOpcode, 0x52, 0x68, 0x21, 0x39, 0x2D, 0x92, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x76,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x75, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x75,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x76
-    });
+    static std::vector<uint8_t> encodedBuf = hexToBytes(
+        "0008 5268 21392D92 0000000000000276 0000000000000275 0000000000000275 0000000000000276");
 
     // Encode
     // TODO: Are these actually big endian?
@@ -50,14 +44,12 @@ void testControlSyncResp() {
 }
 
 void testClientStart() {
-    uint8_t expectedOpcode = OP_ClientStart;
-    static std::vector<uint8_t> encodedBuf = std::vector<uint8_t>({
-        0x00, expectedOpcode, 0x00, 0x00, 0x00, 0x02, 0x00, 0x26, 0x1E, 0x27, 0x00, 0x00, 0x01, 0xF0
-    });
+    static std::vector<uint8_t> encodedBuf = hexToBytes(
+        "0001 0000000200261E27000001F0");
 
     // Decode
     BitStream decodeBitStream(encodedBuf);
-    assertControlOpcode(decodeBitStream, expectedOpcode);
+    assertControlOpcode(decodeBitStream, OP_ClientStart);
     ClientStart decodePacket = ClientStart::decode(decodeBitStream);
     assertEqual(decodePacket.unk0, 0x02000000);
     assertEqual(decodePacket.clientNonce, 0x271E2600);
@@ -65,11 +57,8 @@ void testClientStart() {
 }
 
 void testServerStart() {
-    uint8_t expectedOpcode = OP_ServerStart;
-    static std::vector<uint8_t> encodedBuf = std::vector<uint8_t>({
-        0x00, expectedOpcode, 0x00, 0x26, 0x1E, 0x27, 0x51, 0xBD, 0xC1, 0xCE, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
-        0xD3, 0x00, 0x00, 0x00, 0x02
-    });
+    static std::vector<uint8_t> encodedBuf = hexToBytes(
+        "0002 00261E2751BDC1CE000000000001D300 000002");
 
     // Encode
     ServerStart encodePacket;

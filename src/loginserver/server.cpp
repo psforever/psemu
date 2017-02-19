@@ -77,8 +77,8 @@ void handleCryptoPacket(Server& server, BitStream& bitStream, std::shared_ptr<Se
 
         ClientChallengeXchg clientChallengePacket = ClientChallengeXchg::decode(bitStream);
 
-        if (bitStream.getError()) {
-            std::cout << "Error reading packet!" << std::endl;
+        if (bitStream.getLastError() != BitStream::Error::NONE) {
+            std::cout << "Bitstream error reading packet! (" << static_cast<int>(bitStream.getLastError()) << ")" << std::endl;
             return;
         }
 
@@ -120,8 +120,8 @@ void handleCryptoPacket(Server& server, BitStream& bitStream, std::shared_ptr<Se
 
         ClientFinished packet = ClientFinished::decode(bitStream);
 
-        if (bitStream.getError()) {
-            std::cout << "Error reading packet!" << std::endl;
+        if (bitStream.getLastError() != BitStream::Error::NONE) {
+            std::cout << "Bitstream error reading packet! (" << static_cast<int>(bitStream.getLastError()) << ")" << std::endl;
             return;
         }
 
@@ -164,8 +164,8 @@ void handleControlPacket(Server& server, BitStream& bitStream, std::shared_ptr<S
 
         ClientStart packet = ClientStart::decode(bitStream);
 
-        if (bitStream.getError()) {
-            std::cout << "Error reading packet!" << std::endl;
+        if (bitStream.getLastError() != BitStream::Error::NONE) {
+            std::cout << "Bitstream error reading packet! (" << static_cast<int>(bitStream.getLastError()) << ")" << std::endl;
             return;
         }
 
@@ -190,8 +190,8 @@ void handleControlPacket(Server& server, BitStream& bitStream, std::shared_ptr<S
 
         ControlSync packet = ControlSync::decode(bitStream);
 
-        if (bitStream.getError()) {
-            std::cout << "Error reading packet!" << std::endl;
+        if (bitStream.getLastError() != BitStream::Error::NONE) {
+            std::cout << "Bitstream error reading packet! (" << static_cast<int>(bitStream.getLastError()) << ")" << std::endl;
             return;
         }
 
@@ -223,8 +223,8 @@ void handleControlPacket(Server& server, BitStream& bitStream, std::shared_ptr<S
 
         SlottedMetaPacket packet = SlottedMetaPacket::decode(bitStream, opcode - OP_SlottedMetaPacket0);
 
-        if (bitStream.getError()) {
-            std::cout << "Error reading packet!" << std::endl;
+        if (bitStream.getLastError() != BitStream::Error::NONE) {
+            std::cout << "Bitstream error reading packet! (" << static_cast<int>(bitStream.getLastError()) << ")" << std::endl;
             return;
         }
 
@@ -290,8 +290,8 @@ void handleGamePacketLogin(Server& server, BitStream& bitStream, std::shared_ptr
 
         LoginMessage packet = LoginMessage::decode(bitStream);
 
-        if (bitStream.getError()) {
-            std::cout << "Error reading packet!" << std::endl;
+        if (bitStream.getLastError() != BitStream::Error::NONE) {
+            std::cout << "Bitstream error reading packet! (" << static_cast<int>(bitStream.getLastError()) << ")" << std::endl;
             return;
         }
 
@@ -339,8 +339,8 @@ void handleGamePacketLogin(Server& server, BitStream& bitStream, std::shared_ptr
 
         ConnectToWorldRequestMessage packet = ConnectToWorldRequestMessage::decode(bitStream);
 
-        if (bitStream.getError()) {
-            std::cout << "Error reading packet!" << std::endl;
+        if (bitStream.getLastError() != BitStream::Error::NONE) {
+            std::cout << "Bitstream error reading packet! (" << static_cast<int>(bitStream.getLastError()) << ")" << std::endl;
             return;
         }
 
@@ -378,8 +378,8 @@ void handleGamePacketWorld(Server& server, BitStream& bitStream, std::shared_ptr
 
         KeepAliveMessage packet = KeepAliveMessage::decode(bitStream);
 
-        if (bitStream.getError()) {
-            std::cout << "Error reading packet!" << std::endl;
+        if (bitStream.getLastError() != BitStream::Error::NONE) {
+            std::cout << "Bitstream error reading packet! (" << static_cast<int>(bitStream.getLastError()) << ")" << std::endl;
             return;
         }
 
@@ -399,8 +399,8 @@ void handleGamePacketWorld(Server& server, BitStream& bitStream, std::shared_ptr
 
         ConnectToWorldRequestMessage packet = ConnectToWorldRequestMessage::decode(bitStream);
 
-        if (bitStream.getError()) {
-            std::cout << "Error reading packet!" << std::endl;
+        if (bitStream.getLastError() != BitStream::Error::NONE) {
+            std::cout << "Bitstream error reading packet! (" << static_cast<int>(bitStream.getLastError()) << ")" << std::endl;
             return;
         }
 
@@ -431,8 +431,8 @@ void handleGamePacketWorld(Server& server, BitStream& bitStream, std::shared_ptr
 
         CharacterRequestMessage packet = CharacterRequestMessage::decode(bitStream);
 
-        if (bitStream.getError()) {
-            std::cout << "Error reading packet!" << std::endl;
+        if (bitStream.getLastError() != BitStream::Error::NONE) {
+            std::cout << "Bitstream error reading packet! (" << static_cast<int>(bitStream.getLastError()) << ")" << std::endl;
             return;
         }
 
@@ -523,8 +523,8 @@ void handleNonControlPacket(Server& server, BitStream& bitStream, std::shared_pt
         bitStream.deltaPos(8 * sizeof(uint8_t));
     }
 
-    if (bitStream.getError()) {
-        std::cout << "Error reading packet header!" << std::endl;
+    if (bitStream.getLastError() != BitStream::Error::NONE) {
+        std::cout << "Bitstream error reading packet header! (" << static_cast<int>(bitStream.getLastError()) << ")" << std::endl;
         return;
     }
 
