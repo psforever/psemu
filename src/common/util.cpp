@@ -49,7 +49,7 @@ int hexCharToInt(char c) {
     } else if (c >= 'A' && c <= 'F') {
         return 10 + c - 'A';
     } else if (c >= 'a' && c <= 'f') {
-        return 10 + c - 'A';
+        return 10 + c - 'a';
     }
 
     return -1;
