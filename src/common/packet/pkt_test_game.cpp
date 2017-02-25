@@ -189,5 +189,5 @@ void testPacketCodingGame() {
     // TODO: Test ObjectCreateMessage
     testSetCurrentAvatarMessage();
     // TODO: Test VNLWorldStatusMessage
-	testAvatarFirstTimeEventMessage();
+    testAvatarFirstTimeEventMessage();
 }

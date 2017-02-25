@@ -11,23 +11,23 @@
     When the first time events (FTE's) are received, battle experience is awarded.
     Text information about the object will be displayed.
     A certain itemized checkbox under the 'Training' tab that corresponds is marked off.
-    This indicates which tracked items have not yet been "encountered."
+    The latter list indicates all "encounterable" game objects for which a FTE exists.
     These effects only happen once per character/campaign.
     (The Motion Sensor will occasionally erronously display the information window on repeat encounters.
     No additional experience, though.)
 
     First time events (FTE's) are recorded in a great list in the middle of player ObjectCreateMessage data.
     Tutorial complete events are enqueued nearby.
-    @property player_uid the player
+    @property avatar_uid the player
     @property object_id the game object that triggers the event
     @property unk na
     @property event_name the string name of the event
 */
 class AvatarFirstTimeEventMessage {
 public:
-    uint32_t unk;
     uint16_t avatar_uid;
     uint16_t object_id;
+    uint32_t unk;
     std::string event_name;
 
     static AvatarFirstTimeEventMessage decode(BitStream &bitstream) {
