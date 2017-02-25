@@ -163,6 +163,20 @@ void testSetCurrentAvatarMessage() {
     assertBuffersEqual(testEncodingBuf, encodedBuf);
 }
 
+void testAvatarFirstTimeEventMessage() {
+    static std::vector<uint8_t> decodeBuf = hexToBytes(
+        "69 4b00 c000 01000000 9e 766973697465645f63657274696669636174696f6e5f7465726d696e616c");
+
+    //decode
+    BitStream decodeBitStream(decodeBuf);
+    assertOpcode(decodeBitStream, OP_AvatarFirstTimeEventMessage);
+    AvatarFirstTimeEventMessage decodePacket = AvatarFirstTimeEventMessage::decode(decodeBitStream);
+    assertEqual(decodePacket.avatar_uid, 75);
+    assertEqual(decodePacket.object_id, 192);
+    assertEqual(decodePacket.unk, 1);
+    assertEqual(decodePacket.event_name, "visited_certification_terminal");
+}
+
 void testPacketCodingGame() {
     testCharacterInfoMessage();
     testCharacterRequestMessage();
@@ -175,4 +189,5 @@ void testPacketCodingGame() {
     // TODO: Test ObjectCreateMessage
     testSetCurrentAvatarMessage();
     // TODO: Test VNLWorldStatusMessage
+    testAvatarFirstTimeEventMessage();
 }

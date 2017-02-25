@@ -12,6 +12,7 @@
 #include "crypto/ClientFinished.h"
 #include "crypto/ServerChallengeXchg.h"
 #include "crypto/ServerFinished.h"
+#include "game/AvatarFirstTimeEventMessage.h"
 #include "game/CharacterInfoMessage.h"
 #include "game/CharacterRequestMessage.h"
 #include "game/ConnectToWorldMessage.h"
